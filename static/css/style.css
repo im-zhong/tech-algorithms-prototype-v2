@@ -1,0 +1,301 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f0f2f5;
+}
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 顶部导航 */
+.header {
+    background: linear-gradient(135deg, #1a5fb4 0%, #3584e4 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 60px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 主容器 */
+.main-container {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 侧边栏 */
+.sidebar {
+    background: white;
+    border-right: 1px solid #e8e8e8;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu {
+    border-right: none;
+    padding: 12px 0;
+}
+
+.side-menu .el-menu-item {
+    height: 48px;
+    line-height: 48px;
+    margin: 4px 12px;
+    border-radius: 8px;
+}
+
+.side-menu .el-menu-item.is-active {
+    background: #e6f4ff;
+    color: #1a5fb4;
+}
+
+/* 快速统计 */
+.quick-stats {
+    padding: 16px;
+    margin-top: auto;
+    border-top: 1px solid #e8e8e8;
+}
+
+.quick-stats h4 {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 13px;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-value {
+    color: #333;
+    font-weight: 500;
+}
+
+/* 内容区 */
+.content {
+    background: #f0f2f5;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.module-container {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.module-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 4px solid #1a5fb4;
+}
+
+/* 指标卡片 */
+.metric-cards {
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+}
+
+.metric-card .el-card__body {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.metric-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    margin-right: 16px;
+}
+
+.metric-icon.blue { background: linear-gradient(135deg, #1a5fb4 0%, #3584e4 100%); }
+.metric-icon.green { background: linear-gradient(135deg, #26a269 0%, #33d17a 100%); }
+.metric-icon.orange { background: linear-gradient(135deg, #e66100 0%, #ff7800 100%); }
+.metric-icon.purple { background: linear-gradient(135deg, #9141ac 0%, #c061cb 100%); }
+
+.metric-info {
+    flex: 1;
+}
+
+.metric-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.metric-value .unit {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.metric-trend {
+    font-size: 12px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.metric-trend.up { color: #26a269; }
+.metric-trend.down { color: #e01b24; }
+
+/* 图表容器 */
+.chart-container {
+    height: 280px;
+}
+
+.chart-container-lg {
+    height: 350px;
+}
+
+.chart-row {
+    margin-top: 20px;
+}
+
+/* 卡片头部弹性布局 */
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 分析卡片 */
+.analysis-card {
+    height: 100%;
+}
+
+.analysis-card .el-card__body {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px);
+}
+
+.analysis-result {
+    margin-top: 16px;
+    flex: 1;
+}
+
+.analysis-result .el-textarea__inner {
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* 指标详情 */
+.indicator-detail h3 {
+    font-size: 16px;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.custom-tree-node {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 权重调整 */
+.weight-item {
+    margin-bottom: 16px;
+}
+
+.weight-label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* 表格样式 */
+.el-table {
+    font-size: 13px;
+}
+
+.el-table th {
+    background: #f5f7fa !important;
+}
+
+/* 空状态 */
+.el-empty {
+    padding: 40px 0;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+    .metric-cards .el-col {
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px !important;
+    }
+
+    .side-menu .el-menu-item span {
+        display: none;
+    }
+
+    .quick-stats {
+        display: none;
+    }
+}
