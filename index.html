@@ -83,13 +83,10 @@
         .year-selector label { font-weight: 600; color: #374151; }
         .year-selector select { padding: 10px 20px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 14px; min-width: 140px; cursor: pointer; }
         .year-selector span { color: #6b7280; font-size: 13px; }
-
-        /* Vue v-cloak 防止模板闪烁 */
-        [v-cloak] { display: none !important; }
     </style>
 </head>
 <body>
-<div id="app" v-cloak class="app-container">
+<div id="app" class="app-container">
     <aside class="sidebar">
         <div class="sidebar-header">
             <h1>低空经济</h1>
@@ -314,8 +311,8 @@
     </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script src="static/js/mock-data.js"></script>
 <script src="static/js/mock-ai.js"></script>
 <script src="static/js/app.js"></script>
