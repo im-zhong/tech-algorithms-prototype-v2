@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>深圳市低空经济产业分析平台</title>
+
+    <!-- 预连接到 CDN，提升加载速度 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
     <style>
         * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #f0f2f5; min-height: 100vh; }
@@ -83,10 +88,60 @@
         .year-selector label { font-weight: 600; color: #374151; }
         .year-selector select { padding: 10px 20px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 14px; min-width: 140px; cursor: pointer; }
         .year-selector span { color: #6b7280; font-size: 13px; }
+
+        /* Vue v-cloak 防止模板闪烁 */
+        [v-cloak] { display: none !important; }
+
+        /* 加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loading-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loading-spinner {
+            text-align: center;
+        }
+        .loading-spinner .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-spinner p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
-<div id="app" class="app-container">
+<!-- 加载动画 -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>正在加载数据...</p>
+    </div>
+</div>
+
+<div id="app" v-cloak class="app-container">
     <aside class="sidebar">
         <div class="sidebar-header">
             <h1>低空经济</h1>
@@ -311,8 +366,8 @@
     </main>
 </div>
 
-<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.global.prod.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <script src="static/js/mock-data.js"></script>
 <script src="static/js/mock-ai.js"></script>
 <script src="static/js/app.js"></script>
