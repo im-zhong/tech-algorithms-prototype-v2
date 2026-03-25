@@ -655,18 +655,6 @@ growthChart.setOption({
 
         mounted() {
             console.log('应用启动');
-
-            // 隐藏加载动画
-            const loadingOverlay = document.getElementById('loading-overlay');
-            if (loadingOverlay) {
-                setTimeout(() => {
-                    loadingOverlay.classList.add('fade-out');
-                    setTimeout(() => {
-                        loadingOverlay.style.display = 'none';
-                    }, 500);
-                }, 500); // 给 Vue 一点时间渲染
-            }
-
             this.loadData();
 
             window.addEventListener('resize', () => {
