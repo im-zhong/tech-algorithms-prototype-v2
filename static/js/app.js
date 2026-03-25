@@ -1,23 +1,25 @@
 /**
  * 深圳市低空经济产业分析平台
+ * Mock data imported from mock-data.js and mock-ai.js
  */
 
-const GLM_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
+// Import mock data and AI responses
+// These are defined in separate files that must be loaded before this script
 
-const app = Vue.createApp({
+const { createApp } = Vue;
+
+const app = createApp({
     data() {
         return {
             activeMenu: 'dashboard',
-            showApiKeyModal: false,
-            apiKey: localStorage.getItem('glm_api_key') || '',
 
-            // 数据
-            scaleData: [],
-            innovationData: [],
-            enterpriseData: [],
-            capitalData: [],
-            ecosystemData: [],
-            policyData: [],
+            // 数据 - loaded from mock-data.js (global variables)
+            scaleData: window.scaleData || [],
+            innovationData: window.innovationData || [],
+            enterpriseData: window.enterpriseData || [],
+            capitalData: window.capitalData || [],
+            ecosystemData: window.ecosystemData || [],
+            policyData: window.policyData || [],
 
             // 年份选择
             selectedYear: 2025,
@@ -206,30 +208,32 @@ const app = Vue.createApp({
             },
 
             async loadData() {
-                console.log('开始加载数据...');
-                const urls = [
-                    { name: 'scaleData', url: '/api/data/scale' },
-                    { name: 'innovationData', url: '/api/data/innovation' },
-                    { name: 'enterpriseData', url: '/api/data/enterprise' },
-                    { name: 'capitalData', url: '/api/data/capital' },
-                    { name: 'ecosystemData', url: '/api/data/ecosystem' },
-                    { name: 'policyData', url: '/api/data/policy' }
-                ];
+                console.log('开始加载mock数据...');
 
-                for (const { name, url } of urls) {
-                    try {
-                        const res = await fetch(url);
-                        const json = await res.json();
-                        if (json.success) {
-                            this[name] = json.data;
-                            console.log(name + ' 加载成功:', json.data.length, '条');
-                        }
-                    } catch (e) {
-                        console.error(name + ' 加载失败:', e);
-                    }
-                }
+                // Mock data is already embedded from mock-data.js
+                // Just simulate loading delay for realistic UX
+                const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-                console.log('数据加载完成');
+                // Simulate loading with delays
+                await delay(300);
+                console.log('scaleData 加载成功:', this.scaleData.length, '条');
+
+                await delay(200);
+                console.log('innovationData 加载成功:', this.innovationData.length, '条');
+
+                await delay(200);
+                console.log('enterpriseData 加载成功:', this.enterpriseData.length, '条');
+
+                await delay(200);
+                console.log('capitalData 加载成功:', this.capitalData.length, '条');
+
+                await delay(200);
+                console.log('ecosystemData 加载成功:', this.ecosystemData.length, '条');
+
+                await delay(200);
+                console.log('policyData 加载成功:', this.policyData.length, '条');
+
+                console.log('Mock数据加载完成');
                 this.$nextTick(() => this.renderDashboardCharts());
             },
 
@@ -554,34 +558,10 @@ growthChart.setOption({
                 return values.slice(0, 5);
             },
 
-            async callGLM(prompt) {
-                if (!this.apiKey) {
-                    alert('请先配置GLM API Key');
-                    this.showApiKeyModal = true;
-                    return null;
-                }
-
-                try {
-                    const res = await fetch(GLM_API_URL, {
-                        method: 'POST',
-                        headers: { 'Authorization': 'Bearer ' + this.apiKey, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ model: 'glm-4', messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_tokens: 2000 })
-                    });
-                    const data = await res.json();
-                    return data.choices && data.choices[0] ? data.choices[0].message.content : null;
-                } catch (e) {
-                    alert('API调用失败: ' + e.message);
-                    return null;
-                }
-            },
-
             async analyzeMarket() {
                 this.analyzing = true;
                 this.marketAnalysis = '';
-                const prompt = '你是产业分析专家。基于深圳市低空经济数据：\n' +
-                    this.scaleData.map(d => d['年份'] + ': 企业' + d['企业数量'] + '家, 营收' + d['产业营收_亿元'] + '亿, 增加值' + d['产业增加值_亿元'] + '亿').join('\n') +
-                    '\n请分析：1.整体发展态势 2.增长动力 3.存在问题 4.发展建议。500字左右。';
-                const result = await this.callGLM(prompt);
+                const result = await getMockMarketAnalysis();
                 if (result) this.marketAnalysis = result;
                 this.analyzing = false;
             },
@@ -589,10 +569,7 @@ growthChart.setOption({
             async analyzeCompetition() {
                 this.analyzingCompetition = true;
                 this.competitionAnalysis = '';
-                const prompt = '你是竞争分析专家。基于深圳市低空经济企业数据：\n' +
-                    this.enterpriseData.map(d => d['企业名称'] + ': ' + d['所属环节'] + ', 评分' + d['竞争力评分'] + ', 市占率' + d['市场占有率估计_pct'] + '%').join('\n') +
-                    '\n请分析：1.竞争格局特征 2.龙头优势 3.环节态势 4.进入建议。500字左右。';
-                const result = await this.callGLM(prompt);
+                const result = await getMockCompetitionAnalysis();
                 if (result) this.competitionAnalysis = result;
                 this.analyzingCompetition = false;
             },
@@ -603,61 +580,18 @@ growthChart.setOption({
                 this.predictedValues = null;
                 this.hasPredicted = false;
 
-                if (!this.apiKey) {
-                    alert('请先配置GLM API Key，请点击右上角"配置AI"按钮');
-                    this.showApiKeyModal = true;
-                    this.predicting = false;
-                    return;
-                }
-
-                let historicalData = '';
-                let indicatorName = '';
-                let unit = '';
-
-                if (this.predictionField === 'enterprise') {
-                    historicalData = this.scaleData.map(d => d['年份'] + ': ' + d['企业数量'] + '家').join('\n');
-                    indicatorName = '企业数量';
-                    unit = '家';
-                } else if (this.predictionField === 'revenue') {
-                    historicalData = this.scaleData.map(d => d['年份'] + ': ' + d['产业营收_亿元'] + '亿元').join('\n');
-                    indicatorName = '产业营收';
-                    unit = '亿元';
-                } else {
-                    historicalData = this.innovationData.map(d => d['年份'] + ': ' + d['发明专利数量'] + '件').join('\n');
-                    indicatorName = '发明专利数量';
-                    unit = '件';
-                }
-
-                const prompt = '你是产业趋势预测专家。基于深圳市低空经济' + indicatorName + '历史数据： \n' +
-                    historicalData + '\n\n' +
-                    '请预测2026-2030年的' + indicatorName + '发展趋势：\n' +
-                    '1. 给出每年的具体预测数值（单位：' + unit + '）\n' +
-                    '2. 分析增长驱动因素\n' +
-                    '3. 识别潜在风险和机遇\n' +
-                    '4. 给出发展建议\n\n' +
-                    '重要要求：必须在回复中明确列出每年的预测数值，格式为"2026年： XXXX' + unit + '"，每行一个年份。';
-
-                const result = await this.callGLM(prompt);
+                // Use mock prediction responses
+                const result = await getMockPredictionResponse(this.predictionField);
 
                 if (result) {
-                    this.predictionResult = result;
+                    this.predictionResult = result.text;
+                    this.predictedValues = result.values;
+                    this.hasPredicted = true;
 
-                    // 解析AI返回的预测数值
-                    const values = this.parsePredictionValues(result);
-
-                    if (values.length >= 5) {
-                        this.predictedValues = values.slice(0, 5);
-                        this.hasPredicted = true;
-
-                        // 重新渲染预测图表
-                        this.$nextTick(() => {
-                            this.renderPredictionCharts();
-                        });
-                    } else {
-                        console.log('未能解析出足够的预测数值，使用默认预测');
-                        // 使用默认预测值
-                        this.generateDefaultPrediction();
-                    }
+                    // 重新渲染预测图表
+                    this.$nextTick(() => {
+                        this.renderPredictionCharts();
+                    });
                 }
 
                 this.predicting = false;
@@ -690,12 +624,6 @@ growthChart.setOption({
                 this.$nextTick(() => {
                     this.renderPredictionCharts();
                 });
-            },
-
-            saveApiKey() {
-                localStorage.setItem('glm_api_key', this.apiKey);
-                this.showApiKeyModal = false;
-                alert('API Key已保存');
             }
         },
 
